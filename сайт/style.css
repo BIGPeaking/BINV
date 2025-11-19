@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Georgia', serif;
+}
+
+body {
+    background-color: #fff;
+    color: #111;
+    line-height: 1.6;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 80px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+.btn {
+    background-color: #5a6526;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.btn-outline {
+    border: 1px solid #5a6526;
+    padding: 10px 22px;
+    border-radius: 20px;
+    color: #5a6526;
+    text-decoration: none;
+}
+
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 80px;
+    font-weight: 100;
+    margin-bottom: 60px;
+}
+
+.image-box img {
+    width: 50%;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+
+.benefits {
+    text-align: center;
+    padding: 70px 60px;
+}
+
+.benefits h2 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #555;
+    margin-bottom: 60px;
+}
+
+.benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.benefit h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.benefit p {
+    color: #444;
+    font-size: 14px;
+}
+
+.wide-img {
+    width: 50%;
+    border-radius: 15px;
+    margin-top: 40px;
+}
+
+/* Контакты */
+.contact {
+    text-align: center;
+    padding: 70px 20px;
+}
+
+.contact h2 {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 80px;
+    border-top: 1px solid #eee;
+}
+
+footer ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+footer a {
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+}
+
+.footer-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+
+@media (max-width: 100px) {
+    .benefit-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .hero h1 {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 100px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .benefit-grid {
+        grid-template-columns: 1fr;
+    }
+}
