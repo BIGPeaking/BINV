@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BINV-team</title>
+  <style>
+    :root{
+      --bg1:#070a12;
+      --bg2:#0c1530;
+      --card:#0b1020cc;
+      --text:#eaf2ff;
+      --muted:#a9b7d4;
+      --neon:#7c4dff;
+      --neon2:#19f6e8;
+      --danger:#ff3d71;
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(124,77,255,.20), transparent 60%),
+        radial-gradient(900px 500px at 80% 20%, rgba(25,246,232,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Плавающие “частицы” */
+    .orb{
+      position:fixed;
+      inset:auto;
+      width:240px;height:240px;
+      filter: blur(18px);
+      opacity:.55;
+      border-radius:50%;
+      z-index:-2;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb.one{left:-70px; top:70px; background: radial-gradient(circle, rgba(124,77,255,.85), transparent 60%);}
+    .orb.two{right:-80px; top:220px; background: radial-gradient(circle, rgba(25,246,232,.85), transparent 60%); animation-duration:10s;}
+    .orb.three{left:20%; bottom:-90px; background: radial-gradient(circle, rgba(255,61,113,.65), transparent 60%); animation-duration:12s;}
+
+    @keyframes float{
+      0%,100%{transform: translateY(0) translateX(0) scale(1);}
+      50%{transform: translateY(-22px) translateX(14px) scale(1.04);}
+    }
+
+    /* Скан-лайны (игровой эффект) */
+    .scanlines{
+      pointer-events:none;
+      position:fixed; inset:0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 1px,
+        transparent 2px,
+        transparent 6px
+      );
+      mix-blend-mode: overlay;
+      opacity:.35;
+      z-index:-1;
+      animation: scanMove 5s linear infinite;
+    }
+    @keyframes scanMove{
+      from{transform: translateY(0);}
+      to{transform: translateY(14px);}
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:28px 16px 46px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 16px;
+      border:1px solid rgba(124,77,255,.25);
+      background: rgba(10,14,28,.65);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      transform: translateY(-10px);
+      opacity:0;
+      animation: popIn .9s ease forwards;
+    }
+    @keyframes popIn{
+      to{transform: translateY(0); opacity:1;}
+    }
+
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      letter-spacing:.6px;
+    }
+    .badge{
+      width:42px;height:42px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(124,77,255,.9), rgba(25,246,232,.9));
+      box-shadow: 0 0 24px rgba(124,77,255,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge::after{
+      content:"";
+      position:absolute; inset:-30%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: rotate(25deg);
+      animation: shine 2.6s linear infinite;
+    }
+    @keyframes shine{
+      0%{transform: translateX(-60%) rotate(25deg);}
+      100%{transform: translateX(60%) rotate(25deg);}
+    }
+
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .chip{
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(25,246,232,.25);
+      color:var(--muted);
+      background: rgba(11,16,32,.55);
+      transition: .25s ease;
+    }
+    .chip:hover{
+      transform: translateY(-2px);
+      border-color: rgba(25,246,232,.55);
+      color:var(--text);
+    }
+
+    main{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:16px;
+    }
+    @media (max-width: 860px){
+      main{grid-template-columns:1fr;}
+      .nav{justify-content:flex-start;}
+    }
+
+    .card{
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background: var(--card);
+      box-shadow: 0 14px 40px rgba(0,0,0,.38);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position:relative;
+      animation: liftIn 1s ease forwards;
+      transform: translateY(10px);
+      opacity:0;
+    }
+    .card:nth-child(1){animation-delay:.1s;}
+    .card:nth-child(2){animation-delay:.22s;}
+    @keyframes liftIn{
+      to{transform: translateY(0); opacity:1;}
+    }
+
+    .card .topline{
+      height:4px;
+      background: linear-gradient(90deg, var(--neon), var(--neon2), var(--danger));
+      opacity:.9;
+    }
+
+    .pad{padding:16px;}
+    h1{
+      margin:0 0 8px;
+      font-size:28px;
+      line-height:1.1;
+    }
+    p{margin:0; color:var(--muted); line-height:1.6;}
+    .titleGlow{
+      text-shadow: 0 0 14px rgba(124,77,255,.35);
+    }
+
+    .links{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(124,77,255,.35);
+      background: rgba(7,10,18,.35);
+      color:var(--text);
+      text-decoration:none;
+      transition: .25s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(600px 120px at 20% 0%, rgba(124,77,255,.25), transparent 60%);
+      opacity:0;
+      transition:.25s ease;
+    }
+    .btn:hover{
+      transform: translateY(-3px);
+      border-color: rgba(124,77,255,.7);
+      box-shadow: 0 0 18px rgba(124,77,255,.25);
+    }
+    .btn:hover::before{opacity:1;}
+
+    .btn.alt{
+      border-color: rgba(25,246,232,.35);
+    }
+    .btn.alt:hover{
+      border-color: rgba(25,246,232,.75);
+      box-shadow: 0 0 18px rgba(25,246,232,.25);
+    }
+
+    .icon{
+      width:22px;height:22px;
+      display:grid; place-items:center;
+      border-radius:10px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      font-weight:700;
+      flex:0 0 auto;
+    }
+
+    /* “Игровая панель” справа */
+    .hudRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .stat{
+      flex:1 1 120px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .stat b{display:block; font-size:12px; color:var(--muted); margin-bottom:4px;}
+    .stat span{font-size:16px;}
+    .pulse{
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{filter: drop-shadow(0 0 0 rgba(25,246,232,0));}
+      50%{filter: drop-shadow(0 0 12px rgba(25,246,232,.28));}
+    }
+
+    .progress{
+      margin-top:10px;
+      height:10px;
+      background: rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .bar{
+      height:100%;
+      width:72%;
+      background: linear-gradient(90deg, var(--neon2), var(--neon));
+      animation: load 2.4s ease-out forwards;
+      transform-origin:left;
+      transform: scaleX(0);
+    }
+    @keyframes load{
+      to{transform: scaleX(1);}
+    }
+
+    footer{
+      margin-top:16px;
+      padding:10px 6px;
+      color:rgba(169,183,212,.8);
+      font-size:12px;
+      text-align:center;
+      opacity:.8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+  <div class="scanlines"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <div class="badge" aria-hidden="true"></div>
+        <div>
+          BINV <span style="color:var(--neon2)">team</span><br>
+          <span style="font-size:12px; color:var(--muted)">мини-сайт для сервера</span>
+        </div>
+      </div>
+
+      <div class="nav">
+        <div class="chip">🎮 Home</div>
+        <div class="chip">🗺️ нету</div>
+        <div class="chip">🏆 не придумал</div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Левый блок: текст + 2 ссылки -->
+      <section class="card">
+        <div class="topline"></div>
+        <div class="pad">
+          <h1 class="titleGlow">Портфолио сервера</h1>
+          <p>
+            не придумал
+          </p>
+
+          <div class="links">
+            <!-- ВСТАВЬ СЮДА 2 ССЫЛКИ -->
+            <a class="btn" href="https://t.me/+iuCk9UtwGMk5NDk6" target="_blank" rel="noopener">
+              <span class="icon">1</span>
+              <span>Наш телеграм чат</span>
+            </a>
+
+            <a class="btn alt" href="https://discord.gg/URfHdhAv" target="_blank" rel="noopener">
+              <span class="icon">2</span>
+              <span>Discord сервер</span>
+            </a>
+          </div>
+
+          <p style="margin-top:14px; font-size:13px;">
+            ✨ Упал-вставай, упай-чокопай.
+          </p>
+        </div>
+      </section>
+
+      <!-- Правый блок: “HUD” -->
+      <aside class="card">
+        <div class="topline"></div>
+        <div class="pad">
+          <h2 style="margin:0 0 8px; font-size:18px;">Цель сервера</h2>
+          <p>увеличить кол-во участников и увеличить активность</p>
+
+          <div class="hudRow">
+            <div class="stat pulse">
+              <b>участников:</b>
+              <span>22</span>
+            </div>
+            <div class="stat">
+              <b>активность:</b>
+              <span>средняя</span>
+              <div class="progress" aria-hidden="true"><div class="bar"></div></div>
+            </div>
+            <div class="stat">
+              <b>MISSION</b>
+              <span>rA9</span>
+            </div>
+          </div>
+
+          <p style="margin-top:12px; font-size:13px;">
+            присоединяйтесь к нам, будет весело!
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      сделано BIG_Peaking для BINV-team👍
+    </footer>
+  </div>
+</body>
+</html>
